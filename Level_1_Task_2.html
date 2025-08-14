@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Website Clone - Easy Tutorials</title>
+    <style>
+        /* Theme variables */
+        :root {
+            --background: #fff;
+            --text: #000;
+            --header-bg: linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(images/header-image.png);
+            --section-bg: #f4f4f4;
+            --card-bg: #fff;
+            --faq-bg: #f4f4f4;
+            --footer-bg: #eee;
+            --accent: #db0001;
+            --input-bg: #fff;
+            --input-text: #000;
+            --label-bg: #e0e0e0;
+        }
+
+        body.light-theme {
+            --background: #fff;
+            --text: #000;
+            --header-bg: linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(images/header-image.png);
+            --section-bg: #f4f4f4;
+            --card-bg: #fff;
+            --faq-bg: #f4f4f4;
+            --footer-bg: #eee;
+            --accent: #db0001;
+            --input-bg: #fff;
+            --input-text: #000;
+            --label-bg: #e0e0e0;
+        }
+
+        body.dark-theme {
+            --background: #000;
+            --text: #fff;
+            --header-bg: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url(images/header-image.png);
+            --section-bg: #181818;
+            --card-bg: #222;
+            --faq-bg: #181818;
+            --footer-bg: #111;
+            --accent: #db0001;
+            --input-bg: #222;
+            --input-text: #fff;
+            --label-bg: #303030;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .header {
+            background-image: var(--header-bg);
+        }
+
+        .features, .faq {
+            background: var(--section-bg);
+        }
+
+        .accordian li label, .accordian .content {
+            background: var(--label-bg);
+            color: var(--text);
+        }
+
+        .footer {
+            background: var(--footer-bg);
+            color: #777;
+        }
+
+        .email-signup {
+            background: var(--input-bg);
+        }
+
+        .email-signup input {
+            color: var(--input-text);
+            background: var(--input-bg);
+        }
+
+        nav button, .email-signup button {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* Remaining original CSS unchanged */
+        .header {
+            width: 100%;
+            height: 100vh;
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url(images/header-image.png);
+            background-size: cover;
+            background-position: center;
+            padding: 10px 8%;
+            position: relative;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            width: 300px;
+            cursor: pointer;
+        }
+        nav button {
+            border: 0;
+            outline: 0;
+            background: #db0001;
+            color: #fff;
+            padding: 7px 20px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .language-btn {
+            display: inline-flex;
+            align-items: center;
+            background: transparent;
+            border: 1px soid #fff;
+            padding: 7px 10px;
+        }
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            margin-top: 100px;
+        }
+        .header-content h1 {
+            font-size: 80px;
+            line-height: 70px;
+            font-weight: 600;
+            max-width: 650px;
+        }
+        .email-signup {
+            background: #fff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+        .email-signup input {
+            flex: 1;
+            border: 0;
+            margin-left: 20px;
+        }
+        .email-signup button {
+            background: #db0001;
+            border: 0;
+            outline: 0;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 15px;
+        }
+        .features {
+            padding: 50px 12%;
+            font-size: 22px;
+        }
+        .row {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 50px 0;
+        }
+        .text-col {
+            flex-basis: 50%;
+            margin-bottom: 20px;
+        }
+        .img-col {
+            flex-basis: 50%;
+            margin-bottom: 20px;
+        }
+        .img-col img {
+            display: block;
+            width: 90%;
+            margin: auto;
+        }
+        .features h2 {
+            font-size: 50px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .faq {
+            padding: 10px 12%;
+            text-align: center;
+            font-size: 18px;
+        }
+        .faq h2 {
+            font-weight: 500;
+            font-size: 40px;
+        }
+        .accordian {
+            margin: 50px auto;
+            width: 100%;
+            max-width: 750px;
+        }
+        .accordian li {
+            list-style: none;
+            width: 100%;
+            padding: 5px;
+        }
+        .accordian li label {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 500;
+            background: #303030;
+            margin-bottom: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        label::after {
+            content: '+';
+            font-size: 34px;
+            position: absolute;
+            right: 20px;
+            transition: transform 0.5s;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        .accordian .content {
+            background: #303030;
+            text-align: left;
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s,padding 0.5s;
+        }
+        .accordian input[type="radio"]:checked + label + .content {
+            max-height: 600px;
+            padding: 30px 20px;
+        }
+        accordian input[type="radio"]:checked + label::after {
+            transform: rotate(135deg);
+        }
+        .faq .email-signup {
+            max-width: 600px;
+            margin:20px auto 60px;
+        }
+        .faq small {
+            font-size: 13px;
+        }
+        .footer {
+            padding: 50px 15% 10px;
+            border-top: 6px solid #333;
+            color:#777;
+        }
+        .footer h2 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+        .footer .col {
+            flex-basis: 25%;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+        .footer .col a {
+            display: block;
+            text-decoration: none;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .footer .row {
+            align-items: flex-start;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <nav>
+        <img src="images/logo.png" class="logo">
+        <div>
+            <button class="theme-toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <button class="language-btn">English<img src="images/down-icon.png"></button>
+            <button>Sign in</button>
+        </div>
+    </nav>
+    <div class="header-content">
+        <h1>Unlimited movies,TV Shows and more.</h1>
+        <h3>Watch Anywhere.Cancel Everytime.</h3>
+        <p>Ready to Watch?Enter your Email to create or restart your membership.</p>
+        <form class="email-signup">
+            <input type="text" placeholder="Email address" required>
+            <button type="submit">Get Started</button>
+        </form>
+    </div>
+</div>
+<div class="features">
+    <div class="row">
+        <div class="text-col">
+            <h2>Enjoy your own TV.</h2>
+            <p>Watch on smart TVs,Play Station,Xbox,Chromecast,Apple TV,Blueray players and more.</p>
+        </div>
+        <div class="img-col">
+            <img src="images/feature-1.png"> 
+        </div>
+    </div>
+     <div class="row">
+        <div class="img-col">
+            <img src="images/feature-2.png"> 
+        </div>
+        <div class="text-col">
+            <h2>Download your shows to watch offline</h2>
+            <p>Save your favuorites easily and always have something to watch.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-col">
+            <h2>Watch Every where</h2>
+            <p>Stream unlimited movies and TV Shows on your phone,tablet,laptop, and TV.</p>
+        </div>
+        <div class="img-col">
+            <img src="images/feature-3.png"> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="img-col">
+            <img src="images/feature-4.png"> 
+        </div>
+        <div class="text-col">
+            <h2>Create Profiles for children.</h2>
+            <p>Send Children on adventeres with their favuorite charecters in a space made just for them---Free with your membership.</p>
+        </div>
+    </div>
+</div>
+<div class="faq">
+    <h2>Frequently Asked questions</h2>
+    <ul class="accordian">
+        <li><input type="radio" name="accordian" id="first">
+            <label for="first">What is Netflix?</label>
+            <div class="content">
+                <p>Netflix is a subscription-based streaming service that provides on-demand access to a wide variety of movies, TV shows, documentaries, and more. It offers a vast library of content, including original programming, and is accessible on various internet-connected devices. </p>
+            </div>
+        </li>
+        <li><input type="radio" name="accordian" id="second">
+            <label for="second">How much the Netflix cost?</label>
+            <div class="content">
+                <p>Netflix subscription prices in India vary depending on the plan chosen, ranging from ₹149 to ₹649 per month. The Mobile plan, at ₹149, is for individual mobile users. The Basic plan, priced at ₹199, is for single users on larger screens.</p>
+            </div>
+        </li>
+        <li><input type="radio" name="accordian" id="third">
+            <label for="third">HWhere can i watch?</label>
+            <div class="content">
+                <p>You can watch Netflix on a variety of devices including smart TVs, computers, tablets, smartphones, and streaming media players. You can also watch on some public Wi-Fi enabled locations like coffee shops or libraries, but remember to be mindful of others and use headphones in public spaces.</p>
+            </div>
+        </li>
+
+    </ul>
+    <small>Ready to Watch?Enter your Email to create or restart your membership.</small>
+    <form class="email-signup">
+            <input type="text" placeholder="Email address" required>
+            <button type="submit">Get Started</button>
+        </form> 
+</div>
+<div class="footer">
+    <h2>Questions? call 000-000-000-000</h2>
+    <div class="row">
+        <div class="col">
+            <a href="#">FAQ</a>
+            <a href="#">Investor Relation</a>
+            <a href="#">Privacy</a>
+            <a href="#">Speed Test</a>
+        </div>
+        <div class="col">
+            <a href="#">Help Center</a>
+            <a href="#">Jobs</a>
+            <a href="#">Cookies Preferences</a>
+            <a href="#">Legal Notices</a>
+        </div>
+        <div class="col">
+            <a href="#">Accounts</a>
+            <a href="#">Way To Watch</a>
+            <a href="#">Conporate Information</a>
+            <a href="#">Only on Netflix</a>
+        </div>
+        <div class="col">
+            <a href="#">Media center</a>
+            <a href="#">terms of Use</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </div>
+</div>
+<script>
+// Theme toggle logic
+function setTheme(theme) {
+    document.body.classList.remove('light-theme', 'dark-theme');
+    document.body.classList.add(theme + '-theme');
+    localStorage.setItem('theme', theme);
+    const btn = document.querySelector('.theme-toggle-btn');
+    if (theme === 'dark') {
+        btn.textContent = '🌞 Light Mode';
+    } else {
+        btn.textContent = '🌙 Dark Mode';
+    }
+}
+function toggleTheme() {
+    const current = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+    setTheme(current === 'dark' ? 'light' : 'dark');
+}
+// On load, set theme from localStorage or default to dark
+(function() {
+    const saved = localStorage.getItem('theme');
+    setTheme(saved || 'dark');
+})();
+</script>
+</body>
+</html>

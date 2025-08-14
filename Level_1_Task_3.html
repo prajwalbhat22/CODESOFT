@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #0f2027 50%, #203a43 75%, #2c5364 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(42, 82, 152, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(44, 83, 100, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(30, 60, 114, 0.3) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculator::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+            border-radius: 27px;
+            z-index: -1;
+            background-size: 400% 400%;
+            animation: gradientBorder 6s ease infinite;
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .display {
+            width: 100%;
+            height: 90px;
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            border: none;
+            border-radius: 18px;
+            color: white;
+            font-size: 2.8rem;
+            text-align: right;
+            padding: 0 25px;
+            margin-bottom: 25px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            box-shadow: 
+                inset 0 4px 8px rgba(0, 0, 0, 0.3),
+                0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .display:focus {
+            outline: none;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .btn {
+            height: 75px;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 
+                0 8px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.2));
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .btn.operator {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 
+                0 8px 15px rgba(238, 90, 36, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn.operator:hover {
+            background: linear-gradient(145deg, #ff5252, #e53e3e);
+            box-shadow: 
+                0 15px 25px rgba(238, 90, 36, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .btn.equals {
+            background: linear-gradient(145deg, #4ecdc4, #44a08d);
+            color: white;
+            box-shadow: 
+                0 8px 15px rgba(78, 205, 196, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn.equals:hover {
+            background: linear-gradient(145deg, #26d0ce, #2a9d8f);
+            box-shadow: 
+                0 15px 25px rgba(78, 205, 196, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .btn.clear {
+            background: linear-gradient(145deg, #ffa726, #ff7043);
+            color: white;
+            box-shadow: 
+                0 8px 15px rgba(255, 167, 38, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn.clear:hover {
+            background: linear-gradient(145deg, #ff9800, #ff5722);
+            box-shadow: 
+                0 15px 25px rgba(255, 167, 38, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .btn.zero {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 20px;
+            }
+            
+            .display {
+                height: 60px;
+                font-size: 2rem;
+            }
+            
+            .btn {
+                height: 60px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" readonly>
+        <div class="buttons">
+            <button class="btn clear" onclick="clearDisplay()">C</button>
+            <button class="btn clear" onclick="clearEntry()">CE</button>
+            <button class="btn operator" onclick="appendToDisplay('/')">/</button>
+            <button class="btn operator" onclick="appendToDisplay('*')">×</button>
+            
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn equals" onclick="calculate()" rowspan="2">=</button>
+            
+            <button class="btn zero" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let operator = '';
+        let previousInput = '';
+        let shouldResetDisplay = false;
+
+        function appendToDisplay(value) {
+            if (shouldResetDisplay) {
+                display.value = '';
+                shouldResetDisplay = false;
+            }
+            
+            if (['+', '-', '*', '/'].includes(value)) {
+                if (currentInput === '' && value === '-') {
+                    // Allow negative numbers
+                    display.value += value;
+                    return;
+                }
+                
+                if (operator && currentInput && previousInput) {
+                    calculate();
+                }
+                
+                operator = value;
+                previousInput = display.value;
+                currentInput = '';
+                display.value += ' ' + (value === '*' ? '×' : value) + ' ';
+            } else {
+                currentInput += value;
+                display.value += value;
+            }
+        }
+
+        function calculate() {
+            if (!operator || !previousInput) return;
+            
+            try {
+                let expression = previousInput + operator + currentInput;
+                let result = eval(expression);
+                
+                // Handle division by zero
+                if (!isFinite(result)) {
+                    display.value = 'Error';
+                    resetCalculator();
+                    return;
+                }
+                
+                // Round to avoid floating point errors
+                result = Math.round(result * 100000000) / 100000000;
+                
+                display.value = result;
+                previousInput = result.toString();
+                currentInput = result.toString();
+                operator = '';
+                shouldResetDisplay = false;
+            } catch (error) {
+                display.value = 'Error';
+                resetCalculator();
+            }
+        }
+
+        function clearDisplay() {
+            display.value = '';
+            resetCalculator();
+        }
+
+        function clearEntry() {
+            let current = display.value;
+            if (current.length > 0) {
+                // Remove the last character
+                display.value = current.slice(0, -1);
+                
+                // Update currentInput if it's not empty
+                if (currentInput.length > 0) {
+                    currentInput = currentInput.slice(0, -1);
+                }
+            }
+        }
+
+        function resetCalculator() {
+            currentInput = '';
+            operator = '';
+            previousInput = '';
+            shouldResetDisplay = false;
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9' || key === '.') {
+                appendToDisplay(key);
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                appendToDisplay(key);
+            } else if (key === 'Enter' || key === '=') {
+                calculate();
+            } else if (key === 'Escape') {
+                clearDisplay();
+            } else if (key === 'Backspace') {
+                let current = display.value;
+                display.value = current.slice(0, -1);
+                if (currentInput) {
+                    currentInput = currentInput.slice(0, -1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
